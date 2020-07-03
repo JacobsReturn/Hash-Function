@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Hash Tables.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="HashTable.cpp" />
   </ItemGroup>
   <ItemGroup>

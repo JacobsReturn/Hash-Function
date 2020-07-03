@@ -18,24 +18,36 @@ unsigned int HashTable::RSHash(const char* str, unsigned int length)
     return hash;
 }
 
-void HashTable::Add(std::string name, std::string number)
+unsigned int HashTable::Hash(std::string str)
 {
-    unsigned int hashedKey = RSHash(name.c_str(), 10);
+    unsigned int hashedKey = RSHash(str.c_str(), 10);
     hashedKey = hashedKey % size;
 
+    return hashedKey;
+}
+
+void HashTable::Add(std::string key, std::string number)
+{
+    unsigned int hashedKey = Hash(key);
+
     info* input = new info();
-    input->name = name;
-    input->phone = number;
+    input->key = key;
+    input->value = number;
 
     table[hashedKey] = input;
+
+    std::cout << input->key << " " << input->value << " " << table[hashedKey]->key << " " << hashedKey << std::endl;
 }
 
 HashTable::info* HashTable::Find(std::string find)
 {
-    unsigned int hashedKey = RSHash(find.c_str(), 10);
-    hashedKey = hashedKey % size;
+    unsigned int hashedKey = Hash(find);
 
-    if (table[hashedKey] != nullptr && table[hashedKey]->name == find)
+    std::cout << find << " " << hashedKey << std::endl;
+
+    //if (size >= hashedKey) return nullptr;
+
+    if (table[hashedKey] != nullptr && table[hashedKey]->key == find)
     {
         return table[hashedKey];
     }
@@ -45,10 +57,11 @@ HashTable::info* HashTable::Find(std::string find)
 
 void HashTable::Remove(std::string find)
 {
-    unsigned int hashedKey = RSHash(find.c_str(), 10);
-    hashedKey = hashedKey % size;
+    unsigned int hashedKey = Hash(find);
 
-    if (table[hashedKey] != nullptr && table[hashedKey]->name == find)
+    if (table[hashedKey] == nullptr) return;
+
+    if (table[hashedKey] != nullptr && table[hashedKey]->key == find)
     {
         delete table[hashedKey];
     }

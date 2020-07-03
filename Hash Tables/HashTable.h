@@ -5,12 +5,14 @@ class HashTable {
         HashTable(unsigned int tableSize);
         ~HashTable();
 
+        unsigned int Hash(std::string str);
+
         unsigned int RSHash(const char* str, unsigned int length);
 
         struct info
         {
-            std::string name;
-            std::string phone;
+            std::string key;
+            std::string value;
         };
 
         int size;
