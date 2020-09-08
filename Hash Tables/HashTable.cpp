@@ -29,48 +29,69 @@ unsigned int HashTable::Hash(std::string str)
 void HashTable::Add(std::string key, std::string number)
 {
     unsigned int hashedKey = Hash(key);
+    info input;
 
-    info* input = new info();
-    input->key = key;
-    input->value = number;
+    if (table[hashedKey].inUse)
+    {
+        while (!table[hashedKey].inUse)
+        {
+            hashedKey++;
+
+            if (hashedKey > size)
+            {
+                return;
+            }
+        }
+    }
+
+    input.key = key;
+    input.value = number;
 
     table[hashedKey] = input;
 
-    std::cout << input->key << " " << input->value << " " << table[hashedKey]->key << " " << hashedKey << std::endl;
+    std::cout << input.key << " " << input.value << " " << table[hashedKey].key << " " << hashedKey << std::endl;
 }
 
-HashTable::info* HashTable::Find(std::string find)
+HashTable::info HashTable::Find(std::string find)
 {
     unsigned int hashedKey = Hash(find);
 
-    std::cout << find << " " << hashedKey << std::endl;
+    std::cout << "Searching for " << find << std::endl;
 
-    //if (size >= hashedKey) return nullptr;
-
-    if (table[hashedKey] != nullptr && table[hashedKey]->key == find)
+    if (table[hashedKey].inUse && (table[hashedKey].key != find))
     {
-        return table[hashedKey];
+        while (table[hashedKey].inUse && (table[hashedKey].key == find))
+        {
+            hashedKey++;
+
+            if (hashedKey > size)
+            {
+                return table[0];
+            }
+        }
     }
 
-    return nullptr;
+    std::cout << "Found: " << find << " at index " << hashedKey << std::endl;
+
+    //if (size >= hashedKey) return nullptr;
+    
+    return table[hashedKey];
 }
 
 void HashTable::Remove(std::string find)
 {
     unsigned int hashedKey = Hash(find);
 
-    if (table[hashedKey] == nullptr) return;
-
-    if (table[hashedKey] != nullptr && table[hashedKey]->key == find)
+    if (table[hashedKey].key == find)
     {
-        delete table[hashedKey];
+        table[hashedKey].inUse = false;
     }
 }
 
 HashTable::HashTable(unsigned int tableSize)
 {
     size = tableSize;
-    table = new info* [tableSize];
+    table = new info[tableSize];
 }
 
 HashTable::~HashTable()

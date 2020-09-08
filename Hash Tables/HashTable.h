@@ -13,13 +13,14 @@ class HashTable {
         {
             std::string key;
             std::string value;
+            bool inUse = false;
         };
 
-        int size;
-        info** table = new info * [size];
+        int size = 10;
+        info* table = nullptr;
 
         void Add(std::string input, std::string number);
-        info* Find(std::string find);
+        info Find(std::string find);
 
         void Remove(std::string find);
 }; 
